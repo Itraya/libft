@@ -6,13 +6,14 @@
 /*   By: mlagrang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 14:43:35 by mlagrang          #+#    #+#             */
-/*   Updated: 2021/11/06 10:32:20 by mlagrang         ###   ########lyon.fr   */
+/*   Updated: 2021/11/11 10:37:06 by mlagrang         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
-int	ft_nb_w(const char *s, char c)
+static int	ft_nb_w(const char *s, char c)
 {
 	int	i;
 	int	nb;
@@ -31,7 +32,7 @@ int	ft_nb_w(const char *s, char c)
 	return (nb);
 }
 
-char	*ft_strncpy(char *dest, const char *str, int n)
+static char	*ft_strncpy(char *dest, const char *str, int n)
 {
 	int	i;
 
@@ -42,22 +43,14 @@ char	*ft_strncpy(char *dest, const char *str, int n)
 	return (dest);
 }
 
-void	freedef(char **tab, int l)
-{
-	int	i;
-
-	i = 0;
-	while (i <= l)
-		free(tab[i++]);
-	free(tab);
-}
-
-char	*mallocdef(char **tab, int j, int len)
+static char	*mallocdef(char **tab, int j, int len)
 {
 	tab[j] = malloc(len);
 	if (!tab[j])
 	{
-		freedef(tab, j);
+		while (-j > 0)
+			free(tab[j]);
+		free(tab);
 		return (0);
 	}
 	return (tab[j]);
@@ -70,7 +63,7 @@ char	**ft_split(char const *s, char c)
 	int		l;
 	char	**tab;
 
-	tab = malloc(sizeof(char *) * ft_nb_w(s, c) + 1);
+	tab = malloc(sizeof(char *) * (ft_nb_w(s, c) + 1));
 	if (!tab)
 		return (0);
 	i = 0;
